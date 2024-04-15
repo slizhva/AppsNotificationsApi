@@ -12,6 +12,14 @@ use App\Notifications\StatusNotification;
 
 class NotificationsApiController extends Controller
 {
+    public static function escapeMarkdown(string $string): string
+    {
+        return str_replace(
+            ['[', '`', '*', '_',],
+            ['\[', '\`', '\*', '\_',],
+            $string
+        );
+    }
 
     public function run(Request $request):JsonResponse
     {
@@ -36,7 +44,7 @@ class NotificationsApiController extends Controller
                 '*----- NOTIFICATION NAME -----*' . "\n" .
                 $notification['name'] . "\n" .
                 '*----- NOTIFICATION DATA -----*' . "\n" .
-                $request->getContent()
+                static::escapeMarkdown($request->getContent())
         ]);
 
         Notification::route(NotificationModel::NOTIFICATION_TYPES[$notification['type']], $notification['data'])
