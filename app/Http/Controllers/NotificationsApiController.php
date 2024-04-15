@@ -42,7 +42,7 @@ class NotificationsApiController extends Controller
             'content' =>
                 (env('APP_ENV') === 'local' ? "*----- DEV TEST -----*\n" : '') .
                 '*----- NOTIFICATION NAME -----*' . "\n" .
-                $notification['name'] . "\n" .
+                static::escapeMarkdown($notification['name']) . "\n" .
                 '*----- NOTIFICATION DATA -----*' . "\n" .
                 static::escapeMarkdown($request->getContent())
         ]);
